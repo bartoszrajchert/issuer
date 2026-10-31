@@ -26,3 +26,5 @@ pnpm-debug.log*
 # local secrets
 .dev.vars
 .wrangler/
+
+.turbo

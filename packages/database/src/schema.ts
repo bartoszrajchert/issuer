@@ -13,8 +13,8 @@ import {
   uuid,
   varchar,
 } from "drizzle-orm/pg-core";
-import { PRIORITY, type Priority } from "../shared/priority";
-import { STATUS_TYPE, type StatusType } from "../shared/statusType";
+import { PRIORITY, type Priority } from "@issuer/shared";
+import { STATUS_TYPE, type StatusType } from "@issuer/shared";
 
 const timestampHelper = {
   createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),

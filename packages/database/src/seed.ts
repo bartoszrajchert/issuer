@@ -1,7 +1,7 @@
 import "dotenv/config";
 
 import { v7 as uuidv7 } from "uuid";
-import { STATUS_TYPE } from "../shared/statusType";
+import { STATUS_TYPE } from "@issuer/shared";
 import {
   comments,
   issues,
@@ -15,7 +15,7 @@ import {
 } from "./schema";
 import { drizzle } from "drizzle-orm/node-postgres";
 import { sql } from "drizzle-orm";
-import type { Priority } from "../shared/priority";
+import type { Priority } from "@issuer/shared";
 
 const TEAMS = ["Frontend", "Backend", "Platform"];
 const LABELS = [
