@@ -1,32 +1,32 @@
-import "dotenv/config";
+import 'dotenv/config';
 
-import { v7 as uuidv7 } from "uuid";
-import { STATUS_TYPE } from "@issuer/shared";
+import type { Priority } from '@issuer/shared';
+import { STATUS_TYPE } from '@issuer/shared';
+import { sql } from 'drizzle-orm';
+import { drizzle } from 'drizzle-orm/node-postgres';
+import { v7 as uuidv7 } from 'uuid';
 import {
   comments,
   issues,
   labels,
   labelsToIssues,
+  relations,
+  statuses,
   teams,
   users,
   usersToTeams,
-  statuses,
-  relations,
-} from "./schema";
-import { drizzle } from "drizzle-orm/node-postgres";
-import { sql } from "drizzle-orm";
-import type { Priority } from "@issuer/shared";
+} from './schema';
 
-const TEAMS = ["Frontend", "Backend", "Platform"];
+const TEAMS = ['Frontend', 'Backend', 'Platform'];
 const LABELS = [
-  "bug",
-  "feature",
-  "ui",
-  "api",
-  "perf",
-  "docs",
-  "security",
-  "tech-debt",
+  'bug',
+  'feature',
+  'ui',
+  'api',
+  'perf',
+  'docs',
+  'security',
+  'tech-debt',
 ];
 const USER_COUNT = 20;
 const ISSUES_PER_TEAM = 100;
@@ -46,11 +46,11 @@ export function defaultStatuses(
   teamId: string,
 ): (typeof statuses.$inferInsert)[] {
   return [
-    { name: "Backlog", type: STATUS_TYPE.BACKLOG },
-    { name: "Todo", type: STATUS_TYPE.UNSTARTED },
-    { name: "In Progress", type: STATUS_TYPE.STARTED },
-    { name: "Done", type: STATUS_TYPE.COMPLETED },
-    { name: "Canceled", type: STATUS_TYPE.CANCELED },
+    { name: 'Backlog', type: STATUS_TYPE.BACKLOG },
+    { name: 'Todo', type: STATUS_TYPE.UNSTARTED },
+    { name: 'In Progress', type: STATUS_TYPE.STARTED },
+    { name: 'Done', type: STATUS_TYPE.COMPLETED },
+    { name: 'Canceled', type: STATUS_TYPE.CANCELED },
   ].map((s, i) => ({ id: uuidv7(), teamId, position: i + 1, ...s }));
 }
 

@@ -1,2 +1,2 @@
-export * from "./priority";
-export * from "./statusType";
+export * from './priority';
+export * from './statusType';

@@ -1,6 +1,6 @@
-import "dotenv/config";
-import { drizzle } from "drizzle-orm/node-postgres";
-import { issues, relations } from "./schema";
+import 'dotenv/config';
+import { drizzle } from 'drizzle-orm/node-postgres';
+import { issues, relations } from './schema';
 
 const db = drizzle(process.env.DATABASE_URL!, { relations: { ...relations } });
 

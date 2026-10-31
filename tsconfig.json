@@ -2,12 +2,13 @@
   "compilerOptions": {
     "target": "es2023",
     "module": "preserve",
+    "jsx": "react-jsx",
     "noEmit": true,
     "verbatimModuleSyntax": true,
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "skipLibCheck": true
   },
-  "include": ["**/*.ts", "**/*.tsx", "drizzle.config.ts"],
+  "include": ["**/*.ts", "**/*.tsx", "packages/database/drizzle.config.ts"],
   "exclude": ["node_modules", "dist"]
 }

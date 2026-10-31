@@ -1,4 +1,10 @@
-import { defineRelations, sql } from "drizzle-orm";
+import {
+  PRIORITY,
+  STATUS_TYPE,
+  type Priority,
+  type StatusType,
+} from '@issuer/shared';
+import { defineRelations, sql } from 'drizzle-orm';
 import {
   check,
   doublePrecision,
@@ -12,9 +18,7 @@ import {
   unique,
   uuid,
   varchar,
-} from "drizzle-orm/pg-core";
-import { PRIORITY, type Priority } from "@issuer/shared";
-import { STATUS_TYPE, type StatusType } from "@issuer/shared";
+} from 'drizzle-orm/pg-core';
 
 const timestampHelper = {
   createdAt: timestamp({ withTimezone: true }).defaultNow().notNull(),
@@ -25,7 +29,7 @@ const timestampHelper = {
 };
 
 export const issues = pgTable(
-  "issues",
+  'issues',
   {
     id: uuid().primaryKey(),
     title: varchar({ length: 255 }).notNull(),
@@ -33,55 +37,55 @@ export const issues = pgTable(
     priority: smallint().$type<Priority>().notNull().default(PRIORITY.NONE),
     teamId: uuid()
       .notNull()
-      .references(() => teams.id, { onDelete: "restrict" }), // We want to make sure that issues are not deleted when a team is deleted
+      .references(() => teams.id, { onDelete: 'restrict' }), // We want to make sure that issues are not deleted when a team is deleted
     creatorId: uuid()
       .notNull()
       .references(() => users.id),
     statusId: uuid().notNull(),
-    assigneeId: uuid().references(() => users.id, { onDelete: "set null" }),
+    assigneeId: uuid().references(() => users.id, { onDelete: 'set null' }),
     archivedAt: timestamp({ withTimezone: true }), // We want to archive issues instead of deleting them (good for local-first)
     ...timestampHelper,
   },
   (t) => [
-    check("issues_priority_range", sql`${t.priority} BETWEEN 0 AND 4`),
+    check('issues_priority_range', sql`${t.priority} BETWEEN 0 AND 4`),
     foreignKey({
-      name: "issues_status_same_team_fk",
+      name: 'issues_status_same_team_fk',
       columns: [t.teamId, t.statusId],
       foreignColumns: [statuses.teamId, statuses.id],
-    }).onDelete("restrict"), // .references(...) on statusId not needed
-    index("issues_team_status_id_idx").on(t.teamId, t.statusId), // team and status are often queried together, and we want to sort records by teams and then by status
-    index("issues_creator_id_idx").on(t.creatorId),
-    index("issues_assignee_id_idx").on(t.assigneeId),
+    }).onDelete('restrict'), // .references(...) on statusId not needed
+    index('issues_team_status_id_idx').on(t.teamId, t.statusId), // team and status are often queried together, and we want to sort records by teams and then by status
+    index('issues_creator_id_idx').on(t.creatorId),
+    index('issues_assignee_id_idx').on(t.assigneeId),
   ],
 );
 
 export const statuses = pgTable(
-  "statuses",
+  'statuses',
   {
     id: uuid().primaryKey(),
     name: varchar({ length: 24 }).notNull(),
     teamId: uuid()
       .notNull()
-      .references(() => teams.id, { onDelete: "cascade" }),
+      .references(() => teams.id, { onDelete: 'cascade' }),
     position: doublePrecision().notNull().default(0), // doublePrecision is used here because we want to be able to insert statuses between other statuses (e.g. 1.5 between 1 and 2)
     type: smallint().$type<StatusType>().notNull().default(STATUS_TYPE.BACKLOG),
     ...timestampHelper,
   },
   (t) => [
     // index("statuses_team_id_idx").on(t.teamId), - not needed because we have a unique constraint on teamId and id
-    unique("statuses_team_id_id_unique").on(t.teamId, t.id),
-    unique("statuses_team_id_name_unique").on(t.teamId, t.name), // unique("statuses_name_unique").on(t.name) is same as .unique on column
-    check("statuses_type_check", sql`${t.type} BETWEEN 0 AND 4`),
+    unique('statuses_team_id_id_unique').on(t.teamId, t.id),
+    unique('statuses_team_id_name_unique').on(t.teamId, t.name), // unique("statuses_name_unique").on(t.name) is same as .unique on column
+    check('statuses_type_check', sql`${t.type} BETWEEN 0 AND 4`),
   ],
 );
 
-export const teams = pgTable("teams", {
+export const teams = pgTable('teams', {
   id: uuid().primaryKey(),
   name: varchar({ length: 255 }).notNull().unique(),
   ...timestampHelper,
 });
 
-export const users = pgTable("users", {
+export const users = pgTable('users', {
   id: uuid().primaryKey(),
   name: varchar({ length: 255 }).notNull(),
   email: varchar({ length: 255 }).notNull().unique(),
@@ -89,61 +93,61 @@ export const users = pgTable("users", {
 });
 
 export const comments = pgTable(
-  "comments",
+  'comments',
   {
     id: uuid().primaryKey(),
     content: text().notNull(),
-    ownerId: uuid().references(() => users.id, { onDelete: "set null" }),
+    ownerId: uuid().references(() => users.id, { onDelete: 'set null' }),
     issueId: uuid()
       .notNull()
-      .references(() => issues.id, { onDelete: "cascade" }),
+      .references(() => issues.id, { onDelete: 'cascade' }),
     ...timestampHelper,
   },
   (t) => [
-    index("comments_owner_id_idx").on(t.ownerId),
-    index("comments_issue_id_idx").on(t.issueId),
+    index('comments_owner_id_idx').on(t.ownerId),
+    index('comments_issue_id_idx').on(t.issueId),
   ],
 );
 
-export const labels = pgTable("labels", {
+export const labels = pgTable('labels', {
   id: uuid().primaryKey(),
   name: varchar({ length: 24 }).notNull(),
   ...timestampHelper,
 });
 
 export const labelsToIssues = pgTable(
-  "labels_to_issues",
+  'labels_to_issues',
   {
     labelId: uuid()
       .notNull()
-      .references(() => labels.id, { onDelete: "cascade" }),
+      .references(() => labels.id, { onDelete: 'cascade' }),
     issueId: uuid()
       .notNull()
-      .references(() => issues.id, { onDelete: "cascade" }),
+      .references(() => issues.id, { onDelete: 'cascade' }),
   },
   (t) => [
     primaryKey({ columns: [t.issueId, t.labelId] }),
-    index("labels_to_issues_label_id_idx").on(t.labelId),
+    index('labels_to_issues_label_id_idx').on(t.labelId),
   ],
 );
 
 export const usersToTeams = pgTable(
-  "users_to_teams",
+  'users_to_teams',
   {
     userId: uuid()
       .notNull()
-      .references(() => users.id, { onDelete: "cascade" }),
+      .references(() => users.id, { onDelete: 'cascade' }),
     teamId: uuid()
       .notNull()
-      .references(() => teams.id, { onDelete: "cascade" }),
+      .references(() => teams.id, { onDelete: 'cascade' }),
   },
   (t) => [
     primaryKey({ columns: [t.teamId, t.userId] }),
-    index("users_to_teams_user_id_idx").on(t.userId),
+    index('users_to_teams_user_id_idx').on(t.userId),
   ],
 );
 
-const REL = { creator: "creator", assignee: "assignee" } as const;
+const REL = { creator: 'creator', assignee: 'assignee' } as const;
 export const relations = defineRelations(
   {
     users,

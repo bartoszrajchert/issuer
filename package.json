@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "turbo dev",
     "build": "turbo build",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "turbo lint",
+    "format": "prettier --write ."
   },
   "keywords": [],
   "author": "",
@@ -29,6 +30,9 @@
     "@types/pg": "^8.23.1",
     "drizzle-kit": "1.0.0-rc.4",
     "drizzle-seed": "1.0.0-rc.4",
+    "eslint": "^10.14.0",
+    "prettier": "^3.9.10",
+    "prettier-plugin-organize-imports": "^4.3.0",
     "tsx": "^4.23.15",
     "turbo": "^2.11.10",
     "typescript": "^6.0.3",
