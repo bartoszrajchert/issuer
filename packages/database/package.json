@@ -9,14 +9,8 @@
     "seed": "tsx --env-file=../../.env src/seed.ts"
   },
   "exports": {
-    ".": {
-      "types": "./src/index.ts",
-      "default": "./dist/index.js"
-    },
-    "./schema": {
-      "types": "./src/schema.ts",
-      "default": "./dist/schema.js"
-    }
+    ".": "./src/index.ts",
+    "./schema": "./src/schema.ts"
   },
   "keywords": [],
   "author": "",

@@ -5,14 +5,16 @@ import type {
   CreateUserInput,
   UserListResponse,
   UserResponse,
-} from '../schemas/user.schema.js';
+} from './user.schema';
 
 export const userService = {
   async getUsers(): Promise<UserListResponse> {
     const usersResult = await db.select().from(users);
     return usersResult.map((u) => ({
-      ...u,
-      createdAt: u.createdAt.toDateString(),
+      id: u.id,
+      name: u.name,
+      email: u.email,
+      createdAt: u.createdAt.toISOString(),
     }));
   },
   async createUser(data: CreateUserInput): Promise<UserResponse> {
@@ -25,11 +27,15 @@ export const userService = {
       })
       .returning();
 
+    if (!user) {
+      throw new Error('User was not returned after the creation');
+    }
+
     return {
       id: user.id,
       name: user.name,
       email: user.email,
-      createdAt: user.createdAt.toDateString(),
+      createdAt: user.createdAt.toISOString(),
     };
   },
 };

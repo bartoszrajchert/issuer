@@ -1,43 +1,35 @@
 import { serve } from '@hono/node-server';
 import { swaggerUI } from '@hono/swagger-ui';
-import { OpenAPIHono } from '@hono/zod-openapi';
-import {
-  createUserRoute,
-  getUserRoute,
-} from './controllers/user.controller.js';
-import { userService } from './services/user.service.js';
+import { createRouter } from './lib/create-router';
+import { usersRouter } from './modules/users';
 
-// const app = new Hono();
-const app = new OpenAPIHono();
+const SWAGGER_SLUG = '/ui';
 
-app.openapi(getUserRoute, async (c) => {
-  const users = await userService.getUsers();
-  return c.json(users, 200);
-});
+const app = createRouter()
+  .route('/users', usersRouter)
+  .doc31('/doc', {
+    openapi: '3.1.0',
+    info: {
+      version: '1.0.0',
+      title: 'Issuer API',
+    },
+  })
+  .get(SWAGGER_SLUG, swaggerUI({ url: '/doc' }))
+  .get('/health', (c) => c.text('OK'));
 
-app.openapi(createUserRoute, async (c) => {
-  const data = c.req.valid('json');
-  const user = await userService.createUser(data);
-  return c.json(user, 201);
-});
-
-app.doc('/doc', {
-  openapi: '3.0.0',
-  info: {
-    version: '1.0.0',
-    title: 'My API',
-  },
-});
-app.get('/ui', swaggerUI({ url: '/doc' }));
-app.get('/health', (c) => c.text('OK'));
+// app.onError(errorHandler); // one place to map errors (e.g. a duplicate email) to 409/404/500
+export type AppType = typeof app; // keeps the hc RPC client typed
 
 const server = serve(
   {
     fetch: app.fetch,
-    port: 3000,
+    port: 3001,
   },
   (info) => {
     console.log(`Server is running on http://localhost:${info.port}`);
+    console.log(
+      `Swagger is running on http://localhost:${info.port}${SWAGGER_SLUG}`,
+    );
   },
 );
 

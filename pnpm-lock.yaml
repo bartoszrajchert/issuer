@@ -227,6 +227,9 @@ importers:
       hono:
         specifier: ^4.13.14
         version: 4.13.14
+      uuid:
+        specifier: ^14.0.3
+        version: 14.0.3
     devDependencies:
       '@types/node':
         specifier: ^26.1.1

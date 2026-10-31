@@ -2,6 +2,7 @@
   "compilerOptions": {
     "target": "es2023",
     "module": "preserve",
+    "moduleResolution": "bundler",
     "jsx": "react-jsx",
     "noEmit": true,
     "verbatimModuleSyntax": true,
