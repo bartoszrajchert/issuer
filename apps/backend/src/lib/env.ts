@@ -1,9 +1,9 @@
-import { z } from 'zod/v4';
+import { z } from 'zod';
 
 export const envSchema = z.object({
-  DATABASE_URL: z.string().nonempty(),
   PORT: z
     .string()
+    .nonempty()
     .optional()
     .transform((str) => (str || str === '' ? Number(str) : undefined)),
 });

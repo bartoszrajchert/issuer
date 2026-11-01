@@ -1,10 +1,11 @@
 import 'dotenv/config';
 
 import type { Priority } from '@issuer/shared';
-import { envSchema, STATUS_TYPE } from '@issuer/shared';
+import { STATUS_TYPE } from '@issuer/shared';
 import { sql } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { v7 as uuidv7 } from 'uuid';
+import { envSchema } from './env';
 import {
   comments,
   issues,

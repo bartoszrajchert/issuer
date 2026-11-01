@@ -31,11 +31,26 @@ export const app = createRouter()
       );
     }
     if (err instanceof HTTPException) {
-      return err.getResponse();
+      return c.json(
+        {
+          error: {
+            status: err.status,
+            message: err.message,
+          },
+        } satisfies ErrorObject,
+        err.status,
+      );
     }
     console.error(err);
-    return c.json({ error: 'Internal Server Error' }, 500);
+    return c.json(
+      {
+        error: {
+          status: 500,
+          message: 'Internal Server Error',
+        },
+      } satisfies ErrorObject,
+      500,
+    );
   });
 
-// app.onError(errorHandler); // one place to map errors (e.g. a duplicate email) to 409/404/500
 export type AppType = typeof app; // keeps the hc RPC client typed

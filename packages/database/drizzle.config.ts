@@ -1,6 +1,6 @@
-import { envSchema } from '@issuer/shared';
 import { config } from 'dotenv';
 import { defineConfig } from 'drizzle-kit';
+import { envSchema } from './src/env';
 
 config({ path: '../../.env' });
 

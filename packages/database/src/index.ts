@@ -1,5 +1,5 @@
-import { envSchema } from '@issuer/shared';
 import { drizzle } from 'drizzle-orm/node-postgres';
+import { envSchema } from './env';
 import { relations } from './schema';
 
 const env = envSchema.parse(process.env);

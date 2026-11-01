@@ -8,7 +8,8 @@
     "build": "turbo build",
     "lint": "turbo lint",
     "start": "turbo start",
-    "format": "prettier --write ."
+    "format": "prettier --write .",
+    "typecheck": "turbo typecheck"
   },
   "keywords": [],
   "author": "",

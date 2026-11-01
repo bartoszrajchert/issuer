@@ -1,4 +1,6 @@
-import { z } from 'zod/v4';
+// TODO: implement "code", like "EMAIL_TAKEN", "VALIDATION_FAILED"
+
+import { z } from 'zod';
 
 export const ErrorObjectSchema = z.strictObject({
   error: z.strictObject({
@@ -13,7 +15,7 @@ export class AppError extends Error {
   constructor(
     public status: 404 | 409 | 422,
     message: string,
-    public details?: any,
+    public details?: unknown,
   ) {
     super(message);
   }

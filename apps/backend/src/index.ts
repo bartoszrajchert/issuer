@@ -1,6 +1,6 @@
 import { serve } from '@hono/node-server';
-import { envSchema } from '@issuer/shared';
 import { app, SWAGGER_SLUG } from './app';
+import { envSchema } from './lib/env';
 
 const env = envSchema.parse(process.env);
 
