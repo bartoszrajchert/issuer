@@ -6,13 +6,12 @@
   "scripts": {
     "dev": "tsc --watch",
     "build": "tsc",
-    "seed": "tsx --env-file=../../.env src/seed.ts",
+    "db:seed": "tsx --env-file=../../.env src/seed.ts",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate"
   },
   "exports": {
-    ".": "./src/index.ts",
-    "./schema": "./src/schema.ts"
+    ".": "./src/index.ts"
   },
   "keywords": [],
   "author": "",

@@ -1,6 +1,8 @@
 import { serve } from '@hono/node-server';
 import { swaggerUI } from '@hono/swagger-ui';
+import { HTTPException } from 'hono/http-exception';
 import { createRouter } from './lib/create-router';
+import { AppError } from './lib/errors';
 import { usersRouter } from './modules/users';
 
 const SWAGGER_SLUG = '/ui';
@@ -15,7 +17,14 @@ const app = createRouter()
     },
   })
   .get(SWAGGER_SLUG, swaggerUI({ url: '/doc' }))
-  .get('/health', (c) => c.text('OK'));
+  .get('/health', (c) => c.text('OK'))
+  .onError((err, c) => {
+    if (err instanceof AppError)
+      return c.json({ error: err.message }, err.status);
+    if (err instanceof HTTPException) return err.getResponse();
+    console.error(err);
+    return c.json({ error: 'Internal Server Error' }, 500);
+  });
 
 // app.onError(errorHandler); // one place to map errors (e.g. a duplicate email) to 409/404/500
 export type AppType = typeof app; // keeps the hc RPC client typed

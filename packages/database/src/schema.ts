@@ -16,6 +16,7 @@ import {
   text,
   timestamp,
   unique,
+  uniqueIndex,
   uuid,
   varchar,
 } from 'drizzle-orm/pg-core';
@@ -85,12 +86,16 @@ export const teams = pgTable('teams', {
   ...timestampHelper,
 });
 
-export const users = pgTable('users', {
-  id: uuid().primaryKey(),
-  name: varchar({ length: 255 }).notNull(),
-  email: varchar({ length: 255 }).notNull().unique(),
-  ...timestampHelper,
-});
+export const users = pgTable(
+  'users',
+  {
+    id: uuid().primaryKey(),
+    name: varchar({ length: 255 }).notNull(),
+    email: varchar({ length: 255 }).notNull(),
+    ...timestampHelper,
+  },
+  (t) => [uniqueIndex('emailUniqueIndex').on(sql`lower(${t.email})`)],
+);
 
 export const comments = pgTable(
   'comments',

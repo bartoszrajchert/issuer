@@ -1,6 +1,6 @@
-import { db } from '@issuer/database';
-import { users } from '@issuer/database/schema';
+import { db, isUniqueViolation, users } from '@issuer/database';
 import { v7 as uuidv7 } from 'uuid';
+import { Conflict409Error } from '../../lib/errors';
 import type {
   CreateUserInput,
   UserListResponse,
@@ -18,24 +18,31 @@ export const userService = {
     }));
   },
   async createUser(data: CreateUserInput): Promise<UserResponse> {
-    const [user] = await db
-      .insert(users)
-      .values({
-        id: uuidv7(),
-        name: data.name,
-        email: data.email,
-      })
-      .returning();
+    try {
+      const [user] = await db
+        .insert(users)
+        .values({
+          id: uuidv7(),
+          name: data.name,
+          email: data.email,
+        })
+        .returning();
 
-    if (!user) {
-      throw new Error('User was not returned after the creation');
+      if (!user) {
+        throw new Error('User was not returned after the creation');
+      }
+
+      return {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        createdAt: user.createdAt.toISOString(),
+      };
+    } catch (e) {
+      if (isUniqueViolation(e, 'users_email_key')) {
+        throw new Conflict409Error('Email already taken');
+      }
+      throw e;
     }
-
-    return {
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      createdAt: user.createdAt.toISOString(),
-    };
   },
 };
