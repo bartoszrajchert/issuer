@@ -1,0 +1,1 @@
+ALTER INDEX "emailUniqueIndex" RENAME TO "users_email_lower_unique_index";

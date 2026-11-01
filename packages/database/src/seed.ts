@@ -1,7 +1,7 @@
 import 'dotenv/config';
 
 import type { Priority } from '@issuer/shared';
-import { STATUS_TYPE } from '@issuer/shared';
+import { envSchema, STATUS_TYPE } from '@issuer/shared';
 import { sql } from 'drizzle-orm';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { v7 as uuidv7 } from 'uuid';
@@ -40,7 +40,9 @@ const chunk = <T>(arr: T[], size = 1000) =>
     arr.slice(i * size, (i + 1) * size),
   );
 
-const db = drizzle(process.env.DATABASE_URL!, { relations: { ...relations } });
+const env = envSchema.parse(process.env);
+
+const db = drizzle(env.DATABASE_URL, { relations: { ...relations } });
 
 export function defaultStatuses(
   teamId: string,

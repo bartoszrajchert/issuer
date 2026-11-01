@@ -1,4 +1,5 @@
 import { createRoute } from '@hono/zod-openapi';
+import { ErrorObjectSchema } from '../../lib/errors';
 import { jsonBody, jsonContent } from '../../lib/openapi';
 import {
   CreateUserSchema,
@@ -22,6 +23,7 @@ export const create = createRoute({
   request: { body: jsonBody(CreateUserSchema) },
   responses: {
     201: jsonContent(UserResponseSchema, 'Created user'),
-    // 422: jsonContent(ValidationErrorSchema, 'Validation error'),
+    409: jsonContent(ErrorObjectSchema, 'Conflict error'),
+    422: jsonContent(ErrorObjectSchema, 'Validation error'),
   },
 });

@@ -1,7 +1,10 @@
+import { envSchema } from '@issuer/shared';
 import { drizzle } from 'drizzle-orm/node-postgres';
 import { relations } from './schema';
 
-export const db = drizzle(process.env.DATABASE_URL!, {
+const env = envSchema.parse(process.env);
+
+export const db = drizzle(env.DATABASE_URL, {
   relations: { ...relations },
 });
 

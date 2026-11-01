@@ -1,6 +1,11 @@
-import { db, isUniqueViolation, users } from '@issuer/database';
+import {
+  db,
+  isUniqueViolation,
+  users,
+  USERS_EMAIL_UNIQUE,
+} from '@issuer/database';
 import { v7 as uuidv7 } from 'uuid';
-import { Conflict409Error } from '../../lib/errors';
+import { ConflictError } from '../../lib/errors';
 import type {
   CreateUserInput,
   UserListResponse,
@@ -39,8 +44,8 @@ export const userService = {
         createdAt: user.createdAt.toISOString(),
       };
     } catch (e) {
-      if (isUniqueViolation(e, 'users_email_key')) {
-        throw new Conflict409Error('Email already taken');
+      if (isUniqueViolation(e, USERS_EMAIL_UNIQUE)) {
+        throw new ConflictError('Email already taken');
       }
       throw e;
     }

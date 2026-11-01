@@ -211,6 +211,9 @@ importers:
       '@issuer/database':
         specifier: workspace:*
         version: link:../../packages/database
+      '@issuer/shared':
+        specifier: workspace:*
+        version: link:../../packages/shared
       hono:
         specifier: ^4.13.14
         version: 4.13.14
@@ -224,6 +227,9 @@ importers:
       '@types/node':
         specifier: ^26.1.1
         version: 26.6.5
+      rolldown:
+        specifier: ^1.2.16
+        version: 1.2.16
       typescript:
         specifier: 'catalog:'
         version: 7.0.2
@@ -312,7 +318,7 @@ importers:
         version: 14.0.3
 
   packages/shared:
-    devDependencies:
+    dependencies:
       zod:
         specifier: 'catalog:'
         version: 4.6.7

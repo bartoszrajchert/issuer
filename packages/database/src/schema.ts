@@ -86,6 +86,7 @@ export const teams = pgTable('teams', {
   ...timestampHelper,
 });
 
+export const USERS_EMAIL_UNIQUE = 'users_email_lower_unique_index';
 export const users = pgTable(
   'users',
   {
@@ -94,7 +95,7 @@ export const users = pgTable(
     email: varchar({ length: 255 }).notNull(),
     ...timestampHelper,
   },
-  (t) => [uniqueIndex('emailUniqueIndex').on(sql`lower(${t.email})`)],
+  (t) => [uniqueIndex(USERS_EMAIL_UNIQUE).on(sql`lower(${t.email})`)],
 );
 
 export const comments = pgTable(
