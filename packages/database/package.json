@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "tsc --watch",
     "build": "tsc",
-    "seed": "tsx --env-file=../../.env src/seed.ts"
+    "seed": "tsx --env-file=../../.env src/seed.ts",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate"
   },
   "exports": {
     ".": "./src/index.ts",

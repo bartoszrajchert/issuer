@@ -8,7 +8,7 @@ The motivation behind this project is to prepare a well structured project with 
 
 ## Stack
 
-- **Core:** TypeScript end-to-end, React (or Next.js), Node (Fastify or Hono), PostgreSQL, Drizzle.
+- **Core:** TypeScript end-to-end, React + Vite, Hono + Node.js, PostgreSQL, Drizzle.
 - **Client:** IndexedDB (idb or Dexie), optional Yjs for descriptions.
 - **Real-time:** WebSocket.
 - **AI:** Vercel AI SDK or SDK from provider, structured outputs, pgvector.
