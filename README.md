@@ -23,3 +23,7 @@ The motivation behind this project is to prepare a well structured project with 
 | M3  | Sync: server `syncId`, delta through WebSocket, reconnect from `lastSyncId`, LWW per field, Yjs      |
 | M4  | AI: auto-triage, embedding deduplication, RAG, agent through MCP, evals (server MCP and auto-triage) |
 | M5  | E2E tests (offline, 2 clients), metrics, README with ADR, blog post                                  |
+
+## ADR
+
+This project includes Architecture Decision Records, align with [the Michael Nygard's article](https://www.cognitect.com/blog/2011/11/15/documenting-architecture-decisions).

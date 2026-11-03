@@ -8,5 +8,6 @@ export const db = drizzle(env.DATABASE_URL, {
   relations: { ...relations },
 });
 
+export { sql } from 'drizzle-orm';
 export * from './errors';
 export * from './schema';

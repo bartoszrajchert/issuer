@@ -10,7 +10,8 @@
     "db:migrate": "drizzle-kit migrate"
   },
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./testing": "./src/testing.ts"
   },
   "keywords": [],
   "author": "",

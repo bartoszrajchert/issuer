@@ -5,14 +5,16 @@
     "dev": "tsx watch --env-file=../../.env src/index.ts ",
     "build": "rolldown -c",
     "typecheck": "tsc --noEmit",
-    "start": "node --enable-source-maps --env-file-if-exists=../../.env dist/index.js"
+    "start": "node --enable-source-maps --env-file-if-exists=../../.env dist/index.js",
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@hono/node-server": "^2.1.3",
     "@hono/swagger-ui": "^0.6.2",
     "@hono/zod-openapi": "^1.6.3",
-    "@issuer/shared": "workspace:*",
     "@issuer/database": "workspace:*",
+    "@issuer/shared": "workspace:*",
     "hono": "^4.13.14",
     "uuid": "^14.0.3",
     "zod": "catalog:"
@@ -20,6 +22,7 @@
   "devDependencies": {
     "@types/node": "^26.1.1",
     "rolldown": "^1.2.16",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   }
 }

@@ -1,9 +1,5 @@
 import { z } from 'zod';
 
 export const envSchema = z.object({
-  PORT: z
-    .string()
-    .nonempty()
-    .optional()
-    .transform((str) => (str || str === '' ? Number(str) : undefined)),
+  PORT: z.coerce.number().int().min(1).max(65535).default(3001),
 });
