@@ -21,6 +21,12 @@ export class AppError extends Error {
   }
 }
 
+export class NotFoundError extends AppError {
+  constructor(message: string) {
+    super(404, message);
+  }
+}
+
 export class ConflictError extends AppError {
   constructor(message: string) {
     super(409, message);

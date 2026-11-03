@@ -2,12 +2,14 @@ import { swaggerUI } from '@hono/swagger-ui';
 import { HTTPException } from 'hono/http-exception';
 import { createRouter } from './lib/create-router';
 import { AppError, type ErrorObject } from './lib/errors';
+import { issuesRouter } from './modules/issues';
 import { usersRouter } from './modules/users';
 
 export const SWAGGER_SLUG = '/ui';
 
 export const app = createRouter()
   .route('/users', usersRouter)
+  .route('/issues', issuesRouter)
   .doc31('/doc', {
     openapi: '3.1.0',
     info: {
